@@ -1,6 +1,7 @@
 package ru.appfree.springapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,15 @@ import ru.appfree.springapp.service.QuoteService;
 
 import javax.validation.Valid;
 
+@Controller
 public class QuoteController {
+
+    private final QuoteService quoteService;
+
     @Autowired
-    private QuoteService quoteService;
+    public QuoteController(QuoteService quoteService) {
+        this.quoteService = quoteService;
+    }
 
     @RequestMapping(value="/")
     public void modelQuote(Model model, @ModelAttribute("quote") Quote quote){

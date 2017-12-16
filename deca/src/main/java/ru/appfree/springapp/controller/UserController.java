@@ -16,14 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final SecurityService securityService;
+    private final UserValidator userValidator;
 
     @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private UserValidator userValidator;
+    public UserController(UserService userService, SecurityService securityService, UserValidator userValidator) {
+        this.userService = userService;
+        this.securityService = securityService;
+        this.userValidator = userValidator;
+    }
 
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
@@ -40,11 +42,8 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-
         userService.save(userForm);
-
         securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
-
         return "redirect:/welcome";
     }
 
@@ -53,11 +52,9 @@ public class UserController {
         if (error != null) {
             model.addAttribute("error", "Username or password is incorrect.");
         }
-
         if (logout != null) {
             model.addAttribute("message", "Logged out successfully.");
         }
-
         return "login";
     }
 
@@ -70,6 +67,4 @@ public class UserController {
     public String admin(Model model) {
         return "admin";
     }
-
-
 }

@@ -27,13 +27,10 @@ public class QuoteService {
     public String getRandomQuote() {
         Long RANDOM = ThreadLocalRandom.current().nextLong(1, quotes.size() - 1);
         Quote randomQoute = quotes.get(Math.toIntExact(RANDOM));
-        String stringQoute = randomQoute.getQuote();
-        return stringQoute;
+        return randomQoute.getQuote();
     }
 
     public Quote find(Long quoteId) {
-        return this.quotes.stream().filter(p -> {
-            return p.getQuoteId().equals(quoteId);
-        }).collect(Collectors.toList()).get(0);
+        return this.quotes.stream().filter(p -> p.getQuoteId().equals(quoteId)).collect(Collectors.toList()).get(0);
     }
 }
